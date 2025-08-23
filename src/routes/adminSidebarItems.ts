@@ -1,3 +1,5 @@
+import AddUsers from "@/pages/Admin/AddUsers";
+import Parcel from "@/pages/Parcel/Parcel";
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
@@ -11,6 +13,16 @@ export const adminSidebarItems: ISidebarItem[] = [
           title: "Analytics",
           url: "/admin/analytics",
           Component:Analytics
+        },
+        {
+          title: "Users",
+          url: "/admin/users",
+          Component:AddUsers
+        },
+        {
+          title: "Parcels",
+          url: "/admin/parcels",
+          Component:Parcel
         },
       ],
     },

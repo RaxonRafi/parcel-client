@@ -24,7 +24,7 @@ const registerSchema = z
     email: z.email(),
     role: z.enum([role.sender, role.receiver])
     .refine((val) => val === role.sender || val === role.receiver, {
-      message: "Role must be admin or user",
+      message: "Role must be sender or receiver",
     }),
     password: z
       .string({ message: "Password is required" })
@@ -178,7 +178,7 @@ export function RegisterForm({
                   )}
                 />
                 <Button type="submit" className="w-full">
-                  Login
+                  Submit
                 </Button>
                 {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                         <span className="bg-card text-muted-foreground relative z-10 px-2">
