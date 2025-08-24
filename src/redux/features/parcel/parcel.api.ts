@@ -6,7 +6,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Create Parcel
     createParcel: builder.mutation({
       query: (parcelData) => ({
-        url: "/parcels",
+        url: "/parcel",
         method: "POST",
         body: parcelData,
       }),
@@ -15,10 +15,10 @@ export const parcelApi = baseApi.injectEndpoints({
 
     // Update Parcel Status (Admin only)
     updateParcelStatus: builder.mutation({
-      query: ({ trackingId, status }) => ({
-        url: `/parcels/${trackingId}/status`,
+      query: ({ trackingId,status,note,location }) => ({
+        url: `/parcel/${trackingId}/status`,
         method: "PATCH",
-        body: { status },
+        body: { status,note,location },
       }),
       invalidatesTags: ["PARCEL"],
     }),
@@ -26,7 +26,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Cancel Parcel (Sender only)
     cancelParcel: builder.mutation({
       query: (trackingId) => ({
-        url: `/parcels/${trackingId}/cancel`,
+        url: `/parcel/${trackingId}/cancel`,
         method: "PATCH",
       }),
       invalidatesTags: ["PARCEL"],
@@ -35,7 +35,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // View My Parcels (Sender only)
     getMyParcels: builder.query({
       query: () =>({
-        url:"/parcels/my-parcels",
+        url:"/parcel/my-parcels",
         method:"GET"
       }),
       providesTags: ["PARCEL"],
@@ -44,7 +44,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Incoming Parcels (Receiver only)
     getIncomingParcels: builder.query({
       query: () =>({
-         url:"/parcels/incoming-parcels",
+         url:"/parcel/incoming-parcels",
          method:"GET"
       }) ,
       providesTags: ["PARCEL"],
@@ -53,7 +53,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Confirm Delivery (Receiver only)
     confirmDelivery: builder.mutation({
       query: (trackingId) => ({
-        url: `/parcels/${trackingId}/confirm`,
+        url: `/parcel/${trackingId}/confirm`,
         method: "PATCH",
     
       }),
@@ -63,7 +63,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Delivery History (Receiver only)
     getDeliveryHistory: builder.query({
       query: () =>({
-        url:"/parcels/delivery-history",
+        url:"/parcel/delivery-history",
         method:"GET"
       }),
       providesTags: ["PARCEL"],
@@ -72,7 +72,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Get All Parcels (Admin only)
     getAllParcels: builder.query({
       query: () =>({
-        url:"/parcels",
+        url:"/parcel",
         method:"GET"
       }) ,
       providesTags: ["PARCEL"],
@@ -81,7 +81,7 @@ export const parcelApi = baseApi.injectEndpoints({
     // Get Single Parcel
     getSingleParcel: builder.query({
       query: (trackingId) =>({
-        url:`/parcels/${trackingId}`,
+        url:`/parcel/${trackingId}`,
         method:"GET"
       }),
       providesTags:["PARCEL"],
@@ -89,9 +89,18 @@ export const parcelApi = baseApi.injectEndpoints({
 
     // Block Parcel (Admin only)
     blockParcel: builder.mutation({
-      query: (trackingId) => ({
-        url: `/parcels/${trackingId}/block`,
+      query: ({trackingId,note,location}) => ({
+        url: `/parcel/${trackingId}/block`,
         method: "PATCH",
+        body:{ note, location },
+      }),
+      invalidatesTags: ["PARCEL"],
+    }),
+    unblockParcel: builder.mutation({
+      query: ({trackingId,note,location}) => ({
+        url: `/parcel/${trackingId}/unblock`,
+        method: "PATCH",
+        body:{ note, location },
       }),
       invalidatesTags: ["PARCEL"],
     }),
@@ -109,4 +118,5 @@ export const {
   useGetAllParcelsQuery,
   useGetSingleParcelQuery,
   useBlockParcelMutation,
+  useUnblockParcelMutation
 } = parcelApi;

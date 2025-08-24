@@ -1,6 +1,11 @@
+import { ParcelList } from "@/components/modules/Parcels/ParcelList"
+
 const Parcel = () => {
   return (
-    <div>Parcel</div>
+      <div className='flex justify-center'>
+        <ParcelList/>
+      </div>
+     
   )
 }
 
