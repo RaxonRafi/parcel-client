@@ -1,69 +1,78 @@
-# React + TypeScript + Vite
+## Parcel Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript frontend for a parcel management platform. It supports user authentication and role-based workflows for admins, senders, and receivers, including creating parcels, tracking status, viewing delivery history, and managing users.
 
-Currently, two official plugins are available:
+### Live URL
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+`https://urboxmate.vercel.app/`
 
-## Expanding the ESLint configuration
+### Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**
+  - Framework: React 19, TypeScript
+  - Build Tool: Vite 7
+  - State Management: Redux Toolkit, React Redux
+  - Routing: React Router v7
+  - HTTP: Axios
+  - UI: Tailwind CSS v4, Radix UI, Lucide Icons
+  - Forms & Validation: React Hook Form, Zod
+  - Theming & UX: next-themes, Sonner
+- **Backend**
+  - Language/Runtime: TypeScript (Node.js)
+  - Framework: Express.js
+  - Database: MongoDB
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Project Overview
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Authentication**: Login and registration flows
+- **Parcels**: Create, list, track, and update parcel statuses
+- **Roles**: Admin dashboards and user management; sender and receiver views
+- **Reusable UI**: Modular components and layouts under `src/components`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Getting Started
+
+1. Clone and install
+
+```bash
+git clone https://github.com/RaxonRafi/parcel-client.git
+cd parcel-client
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Configure environment variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the project root:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+VITE_BASE_URL=<your_api_base_url>
 ```
+
+3. Run the app
+
+```bash
+npm run dev
+```
+
+4. Build and preview production
+
+```bash
+npm run build
+npm run preview
+```
+
+### Available Scripts
+
+- **dev**: Start Vite dev server
+- **build**: Type-check and build for production
+- **preview**: Preview the production build
+- **lint**: Run ESLint
+
+### Environment Variables
+
+- **VITE_BASE_URL**: Base URL for the backend API. Used in `src/config/index.ts`.
+
+### Notes
+
+- This project uses ESM and TypeScript project references via `tsconfig.*.json`.
+- Ensure the API defined by `VITE_BASE_URL` is reachable during development and preview.
+- UI components are organized under `src/components/ui` and higher-level modules under `src/components/modules`.

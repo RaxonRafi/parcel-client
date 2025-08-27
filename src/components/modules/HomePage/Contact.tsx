@@ -28,9 +28,9 @@ interface FormValues {
 export const Contact = ({
   title = "Contact Us",
   description = "We are available for questions, feedback, or collaboration opportunities. Let us know how we can help!",
-  phone = "(123) 34567890",
-  email = "email@example.com",
-  web = { label: "shadcnblocks.com", url: "https://shadcnblocks.com" },
+  phone = "+8801867118351",
+  email = "dev.muhammad.rafi@gmail.com",
+  web = { label: "devmuhammadrafi.netlify.app", url: "https://devmuhammadrafi.netlify.app" },
 }: Contact2Props) => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>();
   const [sendMail, { isLoading }] = useSendMailMutation();
