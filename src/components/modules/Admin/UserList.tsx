@@ -38,8 +38,8 @@ export function UserList() {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [limit, setLimit] = useState(5);
+
+    const [limit] = useState(5);
     const { data, isLoading, isError } = useAllUsersQuery({ page: currentPage, limit });
     const totalPage = data?.meta?.totalPage || 1;
     const users = data?.data || [];

@@ -33,7 +33,7 @@ import DeliveryHistory from "./DeliveryHistory";
 export function IncomingParcelList() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [limit, setLimit] = useState(5);
+  const [limit] = useState(5);
   const { data, isLoading, isError } = useGetIncomingParcelsQuery({
     page: currentPage,
     limit,
