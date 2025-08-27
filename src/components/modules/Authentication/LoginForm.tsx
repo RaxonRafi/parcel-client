@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginMutation } from "@/redux/features/auth/auth.api"
 import { useForm } from "react-hook-form"
+import loginFormImg from "@/assets/images/login-form.jpeg"
 
 const loginSchema = z
   .object({
@@ -140,7 +141,7 @@ export function LoginForm({
           </Form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="https://images.pexels.com/photos/12725452/pexels-photo-12725452.jpeg?_gl=1*fzpv34*_ga*NTUwMzI2MjE3LjE3NDQzNzkyMDc.*_ga_8JE65Q40S6*czE3NTU3NzQ2NzEkbzMkZzEkdDE3NTU3NzU0MTYkajU5JGwwJGgw"
+              src={loginFormImg}
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />

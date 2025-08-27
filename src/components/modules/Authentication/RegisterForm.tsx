@@ -12,7 +12,7 @@ import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { role } from "@/constants/role";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import registerFormImg from "@/assets/images/delivery-man.jpg"
 const registerSchema = z
   .object({
     name: z
@@ -226,7 +226,7 @@ export function RegisterForm({
 
           <div className="bg-muted relative hidden md:block">
             <img
-              src="https://images.pexels.com/photos/6868459/pexels-photo-6868459.jpeg?_gl=1*1ibgcbe*_ga*NTUwMzI2MjE3LjE3NDQzNzkyMDc.*_ga_8JE65Q40S6*czE3NTU3NzQ2NzEkbzMkZzEkdDE3NTU3NzU2OTgkajM0JGwwJGgw"
+              src={registerFormImg}
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
