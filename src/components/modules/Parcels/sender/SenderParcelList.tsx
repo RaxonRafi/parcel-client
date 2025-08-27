@@ -20,75 +20,47 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import {
-  useBlockParcelMutation,
-  useGetAllParcelsQuery,
-  useUnblockParcelMutation,
-  useUpdateParcelStatusMutation,
+    useCancelParcelMutation,
+  useGetMyParcelsQuery,
 } from "@/redux/features/parcel/parcel.api";
+import { SenderParcelForm } from "./SenderParcelForm";
+import { StatusLog } from "./StatusLog";
 import { ParcelStatusConfirmation } from "@/components/ParcelStatusConfirmation";
-import { AddParcelForm } from "./AddParcelForm";
 
 
-export function ParcelList() {
+
+export function SenderParcelList() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [limit, setLimit] = useState(5);
-  const { data, isLoading, isError } = useGetAllParcelsQuery({
+  const { data, isLoading, isError } = useGetMyParcelsQuery({
     page: currentPage,
     limit,
   });
   const totalPage = data?.meta?.totalPage || 1;
   const parcels = data?.data || [];
-  const [blockParcel] = useBlockParcelMutation();
-  const [unblockParcel] = useUnblockParcelMutation();
-  const [updateParcelStatus] = useUpdateParcelStatusMutation();
 
-const handleParcelStatusUpdate = async (statusData: {
+  const [cancelParcel] = useCancelParcelMutation()
+
+const handleParcelCancel= async (statusData: {
   trackingId: string;
   status?: string;
   location?: string;
   note?: string;
 }) => {
-  console.log(statusData);
   try {
     if (!statusData.status) {
       toast.error("Status is required for update");
       return;
     }
 
-    await updateParcelStatus(statusData).unwrap();
+    await cancelParcel(statusData).unwrap();
     toast.success("Parcel updated successfully!");
   } catch (error: any) {
     toast.error(error?.data?.message || "Failed to update parcel");
     console.log("Update parcel error:", error);
   }
 };
-
-  const handleBlockParcel = async (
-    trackingId: string,
-    note?: string,
-    location?: string
-  ) => {
-    try {
-      await blockParcel({ trackingId, note, location }).unwrap();
-      console.log("Attempting to block parcel with ID:", trackingId);
-      toast.success("Parcel blocked successfully!");
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to block parcel");
-    }
-  };
-  const handleUnBlockParcel = async (
-    trackingId: string,
-    note?: string,
-    location?: string
-  ) => {
-    try {
-      await unblockParcel({ trackingId, note, location }).unwrap();
-      toast.success("Parcel unblocked successfully!");
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to block parcel");
-    }
-  };
  
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading users</div>;
@@ -97,7 +69,7 @@ const handleParcelStatusUpdate = async (statusData: {
       <CardHeader>
         <CardTitle>Parcel List</CardTitle>
         <CardAction>
-            <AddParcelForm/>
+            <SenderParcelForm/>
         </CardAction>
       </CardHeader>
       <CardContent>
@@ -105,7 +77,6 @@ const handleParcelStatusUpdate = async (statusData: {
           <TableHeader>
             <TableRow>
               <TableHead>Tracking ID</TableHead>
-              <TableHead>Sender</TableHead>
               <TableHead>Receiver</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Weight</TableHead>
@@ -124,16 +95,8 @@ const handleParcelStatusUpdate = async (statusData: {
                   </TableCell>
                   <TableCell>
                     <div>
-                      <div className="font-semibold">{parcel.sender?.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {parcel.sender?.email}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
                       <div className="font-semibold">
-                        {parcel.receiver?.name}
+                        {parcel.receiver?.name || "Muhammad Rafi"}
                       </div>
                       <div className="text-sm text-gray-500">
                         {parcel.receiver?.email}
@@ -149,42 +112,18 @@ const handleParcelStatusUpdate = async (statusData: {
                   <TableCell>
                     {new Date(parcel.createdAt).toLocaleDateString()}
                   </TableCell>
-
+         
                   <TableCell className="flex gap-x-3">
-                    {parcel.isBlocked ? (
-                      <ParcelStatusConfirmation
-                        action="unblock"
-                        trackingId={parcel.trackingId}
-                        currentStatus={parcel.currentStatus}
-                        onConfirm={({ trackingId, note, location }) =>
-                          handleUnBlockParcel(trackingId, note, location)
-                        }
-                      >
-                        <Button size="sm" variant="destructive">
-                          Unblock
-                        </Button>
-                      </ParcelStatusConfirmation>
-                    ) : (
-                      <ParcelStatusConfirmation
-                        action="block"
-                        currentStatus={parcel.currentStatus}
-                        trackingId={parcel.trackingId}
-                        onConfirm={({ trackingId, note, location }) =>
-                          handleBlockParcel(trackingId, note, location)
-                        }
-                      >
-                        <Button size="sm" variant="destructive">
-                          Block
-                        </Button>
-                      </ParcelStatusConfirmation>
-                    )}
+                    <StatusLog trackingId={parcel.trackingId}/>
                     <ParcelStatusConfirmation
-                      action="update"
+                      action="cancel"
                       trackingId={parcel.trackingId}
                       currentStatus={parcel.currentStatus}
-                      onConfirm={handleParcelStatusUpdate}
+                      onConfirm={handleParcelCancel}
                     >
-                      <Button size="sm" variant="outline">Update</Button>
+                      <Button 
+                      disabled={parcel.currentStatus?.toUpperCase() === "CANCELED"}  
+                      size="sm" variant="outline">Cancel</Button>
                     </ParcelStatusConfirmation>
 
                   </TableCell>

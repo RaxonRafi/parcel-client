@@ -11,6 +11,20 @@ export const userApi = baseApi.injectEndpoints({
             }),
             providesTags: ["USER"],
         }),
+        senderList:builder.query({
+            query:()=>({
+                url: "/user/sender-list",
+                method: "GET",
+            }),
+            providesTags: ["USER"],
+        }),
+        receiverList:builder.query({
+            query:()=>({
+                url: "/user/receiver-list",
+                method: "GET",
+            }),
+            providesTags: ["USER"],
+        }),
         updateUser:builder.mutation({
             query:(userInfo)=>({
                 url: "/user/update-profile",
@@ -48,4 +62,6 @@ export const {
  useDeleteUserMutation,
  useBlockUserMutation,
  useUnblockUserMutation,
+ useSenderListQuery,
+ useReceiverListQuery
 } = userApi

@@ -25,8 +25,9 @@ import { ModeToggle } from "./mode.toggle";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
-  { href: "/about", label: "About", role: "PUBLIC" },
-  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "#about", label: "About", role: "PUBLIC" },
+  { href: "#faq", label: "FAQ", role: "PUBLIC" },
+  { href: "#contact", label: "Contact", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/sender", label: "Dashboard", role: role.sender },
   { href: "/receiver", label: "Dashboard", role: role.receiver },
@@ -35,7 +36,7 @@ export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
-  console.log(data?.data?.data?.role);
+console.log(data);
 
   const handleLogout = async () => {
     await logout(undefined);
@@ -43,7 +44,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-50 border-b">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -88,7 +89,7 @@ export default function Navbar() {
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink asChild className="py-1.5">
-                        <Link to={link.href}>{link.label} </Link>
+                        <a href={link.href}>{link.label} </a>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -112,7 +113,7 @@ export default function Navbar() {
                           asChild
                           className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                         >
-                          <Link to={link.href}>{link.label}</Link>
+                          <a href={link.href}>{link.label}</a>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
@@ -122,7 +123,7 @@ export default function Navbar() {
                           asChild
                           className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                         >
-                          <Link to={link.href}>{link.label}</Link>
+                          <a href={link.href}>{link.label}</a>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}

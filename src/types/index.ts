@@ -34,3 +34,11 @@ export interface IErrorResponse {
   };
   stack?: string;
 }
+export type Status =
+  | "REQUESTED"
+  | "APPROVED"
+  | "DISPATCHED"
+  | "IN_TRANSIT"
+  | "DELIVERED"
+  | "CANCELED"
+  | "BLOCKED";

@@ -1,8 +1,6 @@
 import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { role } from "@/constants/role";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
 import Homepage from "@/pages/Homepage";
 import LoginPage from "@/pages/Login";
 import RegisterPage from "@/pages/Register";
@@ -13,6 +11,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
+import TrackParcel from "@/pages/TrackParcel";
 
 export const router = createBrowserRouter([
     {
@@ -24,15 +23,13 @@ export const router = createBrowserRouter([
                 index: true
             },
             {
-                path: "about",
-                Component: About,
+                path:"/track-parcel",
+                Component: TrackParcel
+
             },
-            {
-                path: "contact",
-                Component: Contact,
-            }
         ]
     },
+ 
     {
         path:"/login",
         Component: LoginPage
@@ -71,7 +68,7 @@ export const router = createBrowserRouter([
         children:[
             {
                 index: true,
-                element: <Navigate to="/receiver/incoming-parcels"/>
+                element: <Navigate to="/receiver/parcel"/>
             },
             ...generateRoutes(receiverSidebarItems)
         ]

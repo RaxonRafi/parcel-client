@@ -1,4 +1,4 @@
-import Parcel from "@/pages/Parcel/Parcel";
+import SenderParcels from "@/pages/Parcel/SenderParcels";
 import type { ISidebarItem } from "@/types";
 
 export const senderSidebarItems: ISidebarItem[] = [
@@ -8,7 +8,7 @@ export const senderSidebarItems: ISidebarItem[] = [
         {
           title: "Parcel",
           url: "/sender/parcel",
-          Component:Parcel
+          Component:SenderParcels
         },
       ],
     },

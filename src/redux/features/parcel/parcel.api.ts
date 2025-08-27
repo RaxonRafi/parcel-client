@@ -8,26 +8,28 @@ export const parcelApi = baseApi.injectEndpoints({
       query: (parcelData) => ({
         url: "/parcel",
         method: "POST",
-        body: parcelData,
+        data: parcelData,
       }),
       invalidatesTags: ["PARCEL"],
     }),
 
     // Update Parcel Status (Admin only)
     updateParcelStatus: builder.mutation({
-      query: ({ trackingId,status,note,location }) => ({
+      query: ({ trackingId,status,note,location}) => ({
         url: `/parcel/${trackingId}/status`,
         method: "PATCH",
-        body: { status,note,location },
+        data:{status,note,location}
       }),
+   
       invalidatesTags: ["PARCEL"],
     }),
 
     // Cancel Parcel (Sender only)
     cancelParcel: builder.mutation({
-      query: (trackingId) => ({
+      query: ({trackingId, status, note, location}) => ({
         url: `/parcel/${trackingId}/cancel`,
         method: "PATCH",
+        data:{status,note,location}
       }),
       invalidatesTags: ["PARCEL"],
     }),
@@ -52,10 +54,10 @@ export const parcelApi = baseApi.injectEndpoints({
 
     // Confirm Delivery (Receiver only)
     confirmDelivery: builder.mutation({
-      query: (trackingId) => ({
+      query: ({trackingId,status, note, location}) => ({
         url: `/parcel/${trackingId}/confirm`,
         method: "PATCH",
-    
+        data:{status,note,location}
       }),
       invalidatesTags: ["PARCEL"],
     }),
@@ -82,7 +84,7 @@ export const parcelApi = baseApi.injectEndpoints({
     getSingleParcel: builder.query({
       query: (trackingId) =>({
         url:`/parcel/${trackingId}`,
-        method:"GET"
+        method:"GET",
       }),
       providesTags:["PARCEL"],
     }),
