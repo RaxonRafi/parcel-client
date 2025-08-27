@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,6 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import {
-    useCancelParcelMutation,
   useConfirmDeliveryMutation,
   useGetIncomingParcelsQuery,
 

@@ -19,7 +19,7 @@ const TrackParcelForm = () => {
     if (trackingIdFromQuery && trackingIdFromQuery !== trackId) {
       setTrackId(trackingIdFromQuery);
     }
-  }, [trackingIdFromQuery]);
+  }, [trackingIdFromQuery,trackId]);
 
   const handleTrack = () => {
     if (!trackId.trim()) return;

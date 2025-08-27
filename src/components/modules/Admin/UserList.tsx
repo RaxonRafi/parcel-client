@@ -31,12 +31,14 @@ import { useState } from "react";
 import { AddUsersForm } from "./AddUsersForm";
 import { toast } from "sonner";
 import { DeleteConfirmation } from "@/components/DeleteConfirmation";
-import { BlockConfirmation } from "@/components/blockConfirmation";
+import { BlockConfirmation } from "@/components/BlockConfirmation";
+
 
 export function UserList() {
 
 
     const [currentPage, setCurrentPage] = useState(1);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [limit, setLimit] = useState(5);
     const { data, isLoading, isError } = useAllUsersQuery({ page: currentPage, limit });
     const totalPage = data?.meta?.totalPage || 1;
