@@ -22,7 +22,6 @@ import { useAppDispatch } from "@/redux/hook";
 import { role } from "@/constants/role";
 import { ModeToggle } from "./mode.toggle";
 
-// Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "#about", label: "About", role: "PUBLIC" },
@@ -32,23 +31,25 @@ const navigationLinks = [
   { href: "/sender", label: "Dashboard", role: role.sender },
   { href: "/receiver", label: "Dashboard", role: role.receiver },
 ];
+
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
-console.log(data);
 
   const handleLogout = async () => {
     await logout(undefined);
     dispatch(authApi.util.resetApiState());
   };
 
+  const userRole = data?.data?.data?.role;
+
   return (
     <header className="sticky top-0 z-50 border-b">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
-          {/* Mobile menu trigger */}
+          {/* Mobile menu */}
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -56,6 +57,7 @@ console.log(data);
                 variant="ghost"
                 size="icon"
               >
+                {/* Hamburger / close animation */}
                 <svg
                   className="pointer-events-none"
                   width={16}
@@ -66,77 +68,81 @@ console.log(data);
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M4 12L20 12"
-                    className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
+                    className="origin-center -translate-y-[7px] transition-all duration-300 group-aria-expanded:rotate-[315deg] group-aria-expanded:translate-y-0"
                   />
                   <path
                     d="M4 12H20"
-                    className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
+                    className="origin-center transition-all duration-300 group-aria-expanded:rotate-45"
                   />
                   <path
                     d="M4 12H20"
-                    className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
+                    className="origin-center translate-y-[7px] transition-all duration-300 group-aria-expanded:rotate-[135deg] group-aria-expanded:translate-y-0"
                   />
                 </svg>
               </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink asChild className="py-1.5">
-                        <a href={link.href}>{link.label} </a>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
+                <NavigationMenuList className="flex-col items-start gap-0">
+                  {navigationLinks
+                    .filter(
+                      (link) =>
+                        link.role === "PUBLIC" || link.role === userRole
+                    )
+                    .map((link, index) => (
+                      <NavigationMenuItem key={index} className="w-full">
+                        <NavigationMenuLink asChild className="py-1.5">
+                          {link.href.startsWith("#") ? (
+                            <a href={link.href}>{link.label}</a>
+                          ) : (
+                            <Link to={link.href}>{link.label}</Link>
+                          )}
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    ))}
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
           </Popover>
-          {/* Main nav */}
+
+          {/* Desktop menu */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
-            {/* Navigation menu */}
+            </Link>
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
- {navigationLinks.map((link, index) => (
-                  <>
-                    {link.role === "PUBLIC" && (
-                      <NavigationMenuItem key={index}>
-                        <NavigationMenuLink
-                          asChild
-                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                        >
+                {navigationLinks
+                  .filter(
+                    (link) =>
+                      link.role === "PUBLIC" || link.role === userRole
+                  )
+                  .map((link, index) => (
+                    <NavigationMenuItem key={index}>
+                      <NavigationMenuLink
+                        asChild
+                        className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                      >
+                        {link.href.startsWith("#") ? (
                           <a href={link.href}>{link.label}</a>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                    {link.role === data?.data?.data?.role && (
-                      <NavigationMenuItem key={index}>
-                        <NavigationMenuLink
-                          asChild
-                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                        >
-                          <a href={link.href}>{link.label}</a>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                  </>
-                ))}
+                        ) : (
+                          <Link to={link.href}>{link.label}</Link>
+                        )}
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  ))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
         </div>
+
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {data?.data?.data?.email && (
+          {data?.data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -144,8 +150,7 @@ console.log(data);
             >
               Logout
             </Button>
-          )}
-          {!data?.data?.data?.email && (
+          ) : (
             <Button asChild className="text-sm">
               <Link to="/login">Login</Link>
             </Button>

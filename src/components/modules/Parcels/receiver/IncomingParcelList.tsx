@@ -10,15 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useState } from "react";
+
 import { toast } from "sonner";
 import {
   useConfirmDeliveryMutation,
@@ -29,18 +21,9 @@ import { ParcelStatusConfirmation } from "@/components/ParcelStatusConfirmation"
 import DeliveryHistory from "./DeliveryHistory";
 
 
-
 export function IncomingParcelList() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [limit] = useState(5);
-  const { data, isLoading, isError } = useGetIncomingParcelsQuery({
-    page: currentPage,
-    limit,
-  });
-  const totalPage = data?.meta?.totalPage || 1;
+  const { data, isLoading, isError } = useGetIncomingParcelsQuery(undefined);
   const parcels = data?.data || [];
-
   const [confirmDelivery] = useConfirmDeliveryMutation()
 
 const handleParcelConfirmDelivery= async (statusData: {
@@ -50,11 +33,6 @@ const handleParcelConfirmDelivery= async (statusData: {
   note?: string;
 }) => {
   try {
-    if (!statusData.status) {
-      toast.error("Status is required for update");
-      return;
-    }
-
     await confirmDelivery(statusData).unwrap();
     toast.success("Parcel delivered successfully!");
   } catch (error: any) {
@@ -115,7 +93,6 @@ const handleParcelConfirmDelivery= async (statusData: {
                   </TableCell>
          
                   <TableCell className="flex gap-x-3">
-                    {/* <StatusLog trackingId={parcel.trackingId}/> */}
                     <ParcelStatusConfirmation
                       action="confirm"
                       trackingId={parcel.trackingId}
@@ -134,47 +111,6 @@ const handleParcelConfirmDelivery= async (statusData: {
           </TableBody>
         </Table>
       </CardContent>
-
-      {totalPage && (
-        <div className="flex justify-end mt-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => setCurrentPage((prev) => prev - 1)}
-                  className={
-                    currentPage === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPage }, (_, index) => index + 1).map(
-                (page) => (
-                  <PaginationItem
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    <PaginationLink isActive={currentPage === page}>
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
-                  className={
-                    currentPage === totalPage
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
     </Card>
   );
 }

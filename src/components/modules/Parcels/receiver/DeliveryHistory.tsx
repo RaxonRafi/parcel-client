@@ -5,7 +5,6 @@ import { useGetDeliveryHistoryQuery } from "@/redux/features/parcel/parcel.api";
 
 export default function DeliveryHistory() {
   const { data, isLoading, isError } = useGetDeliveryHistoryQuery(undefined);
-  console.log(data);
 
   if (isLoading) return <Button disabled>Loading...</Button>;
   if (isError) return <Button disabled>Error fetching parcel</Button>;
@@ -24,7 +23,6 @@ export default function DeliveryHistory() {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            {/* Show basic parcel info */}
             <div className="border p-3 rounded-md bg-gray-800">
               <p><span className="font-semibold">Tracking ID:</span> {parcel.trackingId}</p>
               <p><span className="font-semibold">From:</span> {parcel.fromAddress?.street}, {parcel.fromAddress?.city}</p>

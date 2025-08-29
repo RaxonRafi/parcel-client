@@ -9,15 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useState } from "react";
 import { toast } from "sonner";
 import {
     useCancelParcelMutation,
@@ -30,14 +21,7 @@ import { ParcelStatusConfirmation } from "@/components/ParcelStatusConfirmation"
 
 
 export function SenderParcelList() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [limit] = useState(5);
-  const { data, isLoading, isError } = useGetMyParcelsQuery({
-    page: currentPage,
-    limit,
-  });
-  const totalPage = data?.meta?.totalPage || 1;
+  const { data, isLoading, isError } = useGetMyParcelsQuery(undefined);
   const parcels = data?.data || [];
 
   const [cancelParcel] = useCancelParcelMutation()
@@ -133,47 +117,6 @@ const handleParcelCancel= async (statusData: {
           </TableBody>
         </Table>
       </CardContent>
-
-      {totalPage && (
-        <div className="flex justify-end mt-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => setCurrentPage((prev) => prev - 1)}
-                  className={
-                    currentPage === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPage }, (_, index) => index + 1).map(
-                (page) => (
-                  <PaginationItem
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    <PaginationLink isActive={currentPage === page}>
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
-                  className={
-                    currentPage === totalPage
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
     </Card>
   );
 }
