@@ -22,9 +22,9 @@ const registerSchema = z
       })
       .max(50,{ message: "Name is too long" }),
     email: z.email(),
-    role: z.enum([role.sender, role.receiver])
-    .refine((val) => val === role.sender || val === role.receiver, {
-      message: "Role must be sender or receiver",
+    role: z.enum([role.sender, role.receiver,role.delivery_personnel])
+    .refine((val) => val === role.sender || val === role.receiver || val === role.delivery_personnel, {
+      message: "Role must be sender or receiver or delivery personnel",
     }),
     password: z
       .string({ message: "Password is required" })
@@ -143,6 +143,14 @@ export function RegisterForm({
                             </FormControl>
                             <FormLabel className="font-normal">
                               Receiver
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center gap-3">
+                            <FormControl>
+                              <RadioGroupItem value={role.delivery_personnel} />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              Delivery Personnel
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>

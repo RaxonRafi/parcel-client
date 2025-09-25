@@ -1,4 +1,4 @@
-## Parcel Client
+## Parcel Delivery System
 
 A React + TypeScript frontend for a parcel management platform. It supports user authentication and role-based workflows for admins, senders, and receivers, including creating parcels, tracking status, viewing delivery history, and managing users.
 

@@ -9,7 +9,7 @@ export interface ISidebarItem {
   }[];
 }
 
-export type TRole = "ADMIN" | "SENDER" | "RECEIVER";
+export type TRole = "ADMIN" | "SENDER" | "RECEIVER" | "PENDING_DELIVERY";
 
 type ZodIssue = {
   code: string;

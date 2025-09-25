@@ -1,18 +1,21 @@
 import config from "@/config";
 import axios, { type AxiosRequestConfig } from "axios";
 
-
 export const axiosInstance = axios.create({
   baseURL: config.baseUrl,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
-
 });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    // Automatically remove JSON content-type for FormData requests
+    if (config.data instanceof FormData) {
+      if (config.headers) {
+        delete (config.headers as Record<string, unknown>)["Content-Type"];
+      }
+    }
 
     return config;
   },
